@@ -23,9 +23,9 @@ tab AS (
     SELECT
         visitor_id,
         MAX(visit_date) AS last_visit
-    FROM sessions
+    FROM sessionsc 
     WHERE medium != 'organic'
-    GROUP BY visitor_id
+    GROUP BY 1
 ),
 
 last_paid_attribution AS (

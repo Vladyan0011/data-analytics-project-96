@@ -41,16 +41,16 @@ last_paid_attribution AS (
         l.closing_reason,
         l.status_id
     FROM tab AS t
-    INNER JOIN sessions s
+    INNER JOIN sessions AS s
         ON s.visitor_id = t.visitor_id AND s.visit_date = t.last_visit
     LEFT JOIN leads AS l
         ON l.visitor_id = s.visitor_id AND l.created_at >= t.last_visit
     ORDER BY
         l.amount DESC NULLS LAST,
-        s.visit_date,
-        utm_source,
-        utm_medium,
-        utm_campaign
+        s.visit_date ASC,
+        utm_source ASC,
+        utm_medium ASC,
+        utm_campaign ASC
 ),
 
 aggregate_last_paid AS (
@@ -66,7 +66,7 @@ aggregate_last_paid AS (
                 OR lpa.status_id = 142)
             AS purchases_count,
         SUM(lpa.amount) AS revenue
-    FROM last_paid_attribution lpa
+    FROM last_paid_attribution AS lpa
     GROUP BY 1, 2, 3, 4
 )
 
@@ -80,8 +80,8 @@ SELECT
     alp.leads_count,
     alp.purchases_count,
     alp.revenue
-FROM aggregate_last_paid alp
-LEFT JOIN union_ads ua
+FROM aggregate_last_paid AS alp
+LEFT JOIN union_ads AS ua
     ON alp.utm_source = ua.utm_source
     AND alp.utm_campaign = ua.utm_campaign
     AND alp.utm_medium = ua.utm_medium

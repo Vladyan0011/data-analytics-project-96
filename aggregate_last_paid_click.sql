@@ -48,9 +48,9 @@ last_paid_attribution AS (
     ORDER BY
         l.amount DESC NULLS LAST,
         s.visit_date ASC,
-        utm_source ASC,
-        utm_medium ASC,
-        utm_campaign ASC
+        s.source ASC,
+        s.medium ASC,
+        s.campaign ASC
 ),
 
 aggregate_last_paid AS (

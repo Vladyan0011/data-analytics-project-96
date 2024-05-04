@@ -21,11 +21,11 @@ WITH union_ads AS (
 
 tab AS (
     SELECT
-        visitor_id,
-        MAX(visit_date) AS last_visit
-    FROM sessionsc 
+        s.visitor_id,
+        MAX(s.visit_date) AS last_visit
+    FROM sessions s
     WHERE medium != 'organic'
-    GROUP BY 1
+    GROUP BY s.visitor_id
 ),
 
 last_paid_attribution AS (

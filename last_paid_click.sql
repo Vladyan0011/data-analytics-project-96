@@ -1,7 +1,8 @@
+-- last_paid_click attribution
 WITH tab AS (
     SELECT
         visitor_id,
-        MAX(visit_date) AS last_paid_visit  
+        MAX(visit_date) AS last_visit
     FROM sessions s
     WHERE medium <> 'organic'
     GROUP BY visitor_id
@@ -18,7 +19,8 @@ SELECT
     l.closing_reason,
     l.status_id
 FROM tab AS t
-INNER JOIN sessions s ON t.visitor_id = s.visitor_id AND t.last_paid_visit = s.visit_date
-LEFT JOIN leads AS l ON s.visitor_id =l.visitor_id 
+INNER JOIN sessions s ON t.visitor_id = s.visitor_id AND t.last_visit = s.visit_date
+LEFT JOIN leads AS l ON s.visitor_id =l.visitor_id AND t.last_visit <= l.created_at 
 WHERE s.medium <> 'organic'
 ORDER BY l.amount DESC NULLS LAST, visit_date, utm_source, utm_medium, utm_campaign
+LIMIT 10;

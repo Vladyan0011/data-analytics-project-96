@@ -28,8 +28,7 @@ tab AS (
     GROUP BY visitor_id
 ),
 
-last_paid_attribution AS
-(
+last_paid_attribution AS (
     SELECT
         s.visitor_id,
         s.visit_date,
@@ -42,9 +41,16 @@ last_paid_attribution AS
         l.closing_reason,
         l.status_id
     FROM tab AS t
-    INNER JOIN sessions s ON t.visitor_id = s.visitor_id AND t.last_visit = s.visit_date
-    LEFT JOIN leads AS l ON s.visitor_id =l.visitor_id AND t.last_visit <= l.created_at
-    ORDER BY l.amount DESC NULLS LAST, visit_date, utm_source, utm_medium, utm_campaign
+    INNER JOIN sessions s
+        ON t.visitor_id = s.visitor_id AND t.last_visit = s.visit_date
+    LEFT JOIN leads AS l
+        ON l.visitor_id = s.visitor_id AND l.created_at >= t.last_visit
+    ORDER BY
+        l.amount DESC NULLS LAST,
+        visit_date,
+        utm_source,
+        utm_medium,
+        utm_campaign
 ),
 
 aggregate_last_paid AS (

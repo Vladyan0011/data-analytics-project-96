@@ -63,8 +63,8 @@ aggregate_last_paid AS (
         COUNT(lpa.lead_id) AS leads_count,
         COUNT(lpa.amount)
         FILTER (WHERE lpa.closing_reason = 'Успешно реализованно'
-        OR lpa.status_id = 142)
-        AS purchases_count,
+                OR lpa.status_id = 142)
+            AS purchases_count,
         SUM(lpa.amount) AS revenue
     FROM last_paid_attribution lpa
     GROUP BY 1, 2, 3, 4
@@ -87,9 +87,9 @@ LEFT JOIN union_ads ua
     AND alp.utm_medium = ua.utm_medium
     AND DATE(alp.visit_date) = ua.campaign_date
 ORDER BY
-    revenue DESC NULLS LAST,
-    visit_date,
-    visitors_count DESC,
-    utm_source,
-    utm_medium,
-    utm_campaign
+    alp.revenue DESC NULLS LAST,
+    alp.visit_date,
+    alp.visitors_count DESC,
+    alp.utm_source,
+    alp.utm_medium,
+    alp.utm_campaign

@@ -42,12 +42,12 @@ last_paid_attribution AS (
         l.status_id
     FROM tab AS t
     INNER JOIN sessions s
-        ON t.visitor_id = s.visitor_id AND t.last_visit = s.visit_date
+        ON s.visitor_id = t.visitor_id AND s.visit_date = t.last_visit
     LEFT JOIN leads AS l
         ON l.visitor_id = s.visitor_id AND l.created_at >= t.last_visit
     ORDER BY
         l.amount DESC NULLS LAST,
-        visit_date,
+        s.visit_date,
         utm_source,
         utm_medium,
         utm_campaign
@@ -62,9 +62,10 @@ aggregate_last_paid AS (
         COUNT(DISTINCT lpa.visitor_id) AS visitors_count,
         COUNT(lpa.lead_id) AS leads_count,
         COUNT(lpa.amount)
-            FILTER (WHERE lpa.closing_reason = 'Успешно реализованно' OR lpa.status_id = 142)
-            AS purchases_count,
-        SUM(amount) AS revenue
+        FILTER (WHERE lpa.closing_reason = 'Успешно реализованно'
+        OR lpa.status_id = 142)
+        AS purchases_count,
+        SUM(lpa.amount) AS revenue
     FROM last_paid_attribution lpa
     GROUP BY 1, 2, 3, 4
 )
@@ -85,4 +86,10 @@ LEFT JOIN union_ads ua
     AND alp.utm_campaign = ua.utm_campaign
     AND alp.utm_medium = ua.utm_medium
     AND DATE(alp.visit_date) = ua.campaign_date
-ORDER BY revenue DESC NULLS LAST, visit_date, visitors_count DESC, utm_source, utm_medium, utm_campaign
+ORDER BY
+    revenue DESC NULLS LAST,
+    visit_date,
+    visitors_count DESC,
+    utm_source,
+    utm_medium,
+    utm_campaign

@@ -16,7 +16,6 @@ WITH union_ads AS (
         SUM(daily_spent) AS spent
     FROM ya_ads
     GROUP BY 1, 2, 3, 4
-    ORDER BY 1
 ),
 
 tab AS (
@@ -45,12 +44,6 @@ last_paid_attribution AS (
         ON s.visitor_id = t.visitor_id AND s.visit_date = t.last_visit
     LEFT JOIN leads AS l
         ON l.visitor_id = s.visitor_id AND l.created_at >= t.last_visit
-    ORDER BY
-        l.amount DESC NULLS LAST,
-        s.visit_date ASC,
-        s.source ASC,
-        s.medium ASC,
-        s.campaign ASC
 ),
 
 aggregate_last_paid AS (
@@ -61,13 +54,10 @@ aggregate_last_paid AS (
         lpa.utm_campaign,
         COUNT(DISTINCT lpa.visitor_id) AS visitors_count,
         COUNT(lpa.lead_id) AS leads_count,
-        COUNT(lpa.amount)
-            FILTER (WHERE lpa.closing_reason = 'Успешно реализованно'
-            OR lpa.status_id = 142)
-            AS purchases_count,
+        COUNT(lpa.amount) FILTER (WHERE lpa.closing_reason = 'Успешно реализованно' OR lpa.status_id = 142) AS purchases_count,
         SUM(lpa.amount) AS revenue
     FROM last_paid_attribution AS lpa
-    GROUP BY 1, 2, 3, 4
+    GROUP BY DATE(lpa.visit_date), lpa.utm_source, lpa.utm_medium, lpa.utm_campaign
 )
 
 SELECT
@@ -92,4 +82,4 @@ ORDER BY
     alp.visitors_count DESC,
     alp.utm_source,
     alp.utm_medium,
-    alp.utm_campaign
+    alp.utm_campaign;

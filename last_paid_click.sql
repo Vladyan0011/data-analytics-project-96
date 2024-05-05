@@ -19,15 +19,15 @@ SELECT
     l.closing_reason,
     l.status_id
 FROM tab AS t
-INNER JOIN 
-    sessions s ON
-        t.visitor_id = s.visitor_id AND t.last_visit = s.visit_date
-LEFT JOIN 
+INNER JOIN
+    sessions AS s ON
+    t.visitor_id = s.visitor_id AND t.last_visit = s.visit_date
+LEFT JOIN
     leads AS l ON
-        s.visitor_id =l.visitor_id AND t.last_visit <= l.created_at
+    s.visitor_id =l.visitor_id AND t.last_visit <= l.created_at
 ORDER BY
     l.amount DESC NULLS LAST,
-    visit_date,
-    utm_source,
-    utm_medium,
-    utm_campaign;
+    visit_date ASC,
+    utm_source ASC,
+    utm_medium ASC,
+    utm_campaign ASC;

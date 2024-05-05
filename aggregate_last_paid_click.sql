@@ -62,8 +62,8 @@ aggregate_last_paid AS (
         COUNT(DISTINCT lpa.visitor_id) AS visitors_count,
         COUNT(lpa.lead_id) AS leads_count,
         COUNT(lpa.amount)
-        FILTER (WHERE lpa.closing_reason = 'Успешно реализованно'
-                OR lpa.status_id = 142)
+            FILTER (WHERE lpa.closing_reason = 'Успешно реализованно'
+            OR lpa.status_id = 142)
             AS purchases_count,
         SUM(lpa.amount) AS revenue
     FROM last_paid_attribution AS lpa

@@ -75,9 +75,9 @@ SELECT
 FROM aggregate_last_paid AS alp
 LEFT JOIN union_ads AS ua
     ON alp.utm_source = ua.utm_source
-    AND alp.utm_campaign = ua.utm_campaign
-    AND alp.utm_medium = ua.utm_medium 
-    AND DATE(alp.visit_date) = ua.campaign_date
+        AND alp.utm_campaign = ua.utm_campaign
+        AND alp.utm_medium = ua.utm_medium
+        AND DATE(alp.visit_date) = ua.campaign_date
 ORDER BY
     9 DESC NULLS LAST,
     1 ASC,

@@ -61,9 +61,9 @@ last_paid_attribution AS (
 aggregate_last_paid AS (
     SELECT
         DATE(lpa.visit_date) AS visit_date,
-        lpa.utm_source,
-        lpa.utm_medium,
-        lpa.utm_campaign,
+        lpa.utm_source AS utm_source,
+        lpa.utm_medium AS utm_medium,
+        lpa.utm_campaign AS utm_campaign,
         COUNT(DISTINCT lpa.visitor_id) AS visitors_count,
         COUNT(lpa.lead_id) AS leads_count,
         COUNT(lpa.amount) FILTER (
@@ -93,7 +93,7 @@ FROM
     aggregate_last_paid AS alp
 LEFT JOIN
     union_ads AS ua
-    ON alp.utm_source = ua.utm_source
+        ON alp.utm_source = ua.utm_source
         AND alp.utm_campaign = ua.utm_campaign
         AND alp.utm_medium = ua.utm_medium
         AND alp.visit_date = ua.campaign_date

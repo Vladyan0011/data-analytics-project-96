@@ -52,12 +52,12 @@ aggregate_last_paid AS (
         lpa.utm_source,
         lpa.utm_medium,
         lpa.utm_campaign,
+        SUM(lpa.amount) AS revenue,
         COUNT(DISTINCT lpa.visitor_id) AS visitors_count,
         COUNT(lpa.lead_id) AS leads_count,
         COUNT(lpa.amount) FILTER (
-            WHERE lpa.closing_reason = 'Успешно реализованно' OR lpa.status_id = 142
-            ) AS purchases_count,
-        SUM(lpa.amount) AS revenue
+        WHERE lpa.closing_reason = 'Успешно реализованно' OR lpa.status_id = 142
+        ) AS purchases_count
     FROM last_paid_attribution AS lpa
     GROUP BY 1, 2, 3, 4
 )

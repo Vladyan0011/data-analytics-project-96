@@ -60,7 +60,7 @@ last_paid_attribution AS (
 
 aggregate_last_paid AS (
     SELECT
-        DATE(lpa.visit_date) AS visit_date,
+        lpa.visit_date,
         lpa.utm_source,
         lpa.utm_medium,
         lpa.utm_campaign,

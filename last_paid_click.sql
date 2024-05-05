@@ -24,10 +24,10 @@ INNER JOIN
     t.visitor_id = s.visitor_id AND t.last_visit = s.visit_date
 LEFT JOIN
     leads AS l ON
-    s.visitor_id =l.visitor_id AND t.last_visit <= l.created_at
+    s.visitor_id = l.visitor_id AND t.last_visit <= l.created_at
 ORDER BY
     l.amount DESC NULLS LAST,
-    visit_date ASC,
+    s.visit_date ASC,
     utm_source ASC,
     utm_medium ASC,
     utm_campaign ASC;

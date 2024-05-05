@@ -60,10 +60,10 @@ last_paid_attribution AS (
 
 aggregate_last_paid AS (
     SELECT
-        DATE(lpa.visit_date) AS visit_date,
         lpa.utm_source,
         lpa.utm_medium,
         lpa.utm_campaign,
+        DATE(lpa.visit_date) AS visit_date,
         COUNT(DISTINCT lpa.visitor_id) AS visitors_count,
         COUNT(lpa.lead_id) AS leads_count,
         COUNT(lpa.amount) FILTER (

@@ -39,7 +39,7 @@ tab AS (
 last_paid_attribution AS (
     SELECT
         s.visitor_id,
-        s.visit_date,
+        DATE(s.visit_date) AS visitt_date,
         s.source AS utm_source,
         s.medium AS utm_medium,
         s.campaign AS utm_campaign,
@@ -60,7 +60,7 @@ last_paid_attribution AS (
 
 aggregate_last_paid AS (
     SELECT
-        DATE(lpa.visit_date) AS visit_date,
+        lpa.visit_date,
         lpa.utm_source,
         lpa.utm_medium,
         lpa.utm_campaign,

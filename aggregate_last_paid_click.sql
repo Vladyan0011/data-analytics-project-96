@@ -80,8 +80,8 @@ LEFT JOIN union_ads AS ua
         AND DATE(alp.visit_date) = ua.campaign_date
 ORDER BY
     alp.revenue DESC NULLS LAST,
-    alp.visit_date,
+    alp.visit_date ASC,
     alp.visitors_count DESC,
-    alp.utm_source,
-    alp.utm_medium,
-    alp.utm_campaign;
+    alp.utm_source ASC,
+    alp.utm_medium ASC,
+    alp.utm_campaign ASC;

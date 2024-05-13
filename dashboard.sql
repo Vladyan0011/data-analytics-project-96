@@ -40,7 +40,7 @@ diff_tab AS (
 )
 
 SELECT PERCENTILE_DISC(0.9) WITHIN GROUP (ORDER BY diff) AS p_90
-FROM diff_tab
+FROM diff_tab;
 
 -- count organic and traffic visits
 WITH organic_and_ads AS (
@@ -76,4 +76,4 @@ SELECT
     ads.ads_visitors,
     organic.organic_visitors
 FROM ads
-LEFT JOIN organic ON ads.visit_date = organic.visit_date
+LEFT JOIN organic ON ads.visit_date = organic.visit_date;

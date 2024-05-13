@@ -48,7 +48,8 @@ WITH tab AS (
         visitor_id,
         visit_date,
         CASE
-        	    WHEN medium = 'organic' THEN medium
+        	WHEN medium = 'organic'
+                THEN medium
     	        ELSE 'ads'
         END AS source
     FROM sessions
@@ -59,7 +60,7 @@ ads AS (
         DATE(visit_date) AS visit_date,
         COUNT(visitor_id) AS ads_visitors
     FROM tab
-    WHERE SOURCE = 'ads'
+    WHERE source = 'ads'
     GROUP BY DATE(visit_date)
     ORDER BY visit_date ASC
 ),

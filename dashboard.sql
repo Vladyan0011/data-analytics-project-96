@@ -30,16 +30,16 @@ diff_tab AS (
         leads AS l ON
         s.visitor_id = l.visitor_id
         AND t.last_visit <= l.created_at
-    WHERE closing_reason  = 'Успешная продажа' OR status_id = 142
+    WHERE l.closing_reason = 'Успешная продажа' OR l.status_id = 142
     ORDER BY
         l.amount DESC NULLS LAST,
-        visit_date ASC,
-        utm_source ASC,
-        utm_medium ASC,
-        utm_campaign ASC
+        s.visit_date ASC,
+        s.utm_source ASC,
+        s.utm_medium ASC,
+        s.utm_campaign ASC
 )
-SELECT
-    PERCENTILE_DISC(0.9) WITHIN GROUP (ORDER BY diff) AS p_90
+
+SELECT PERCENTILE_DISC(0.9) WITHIN GROUP (ORDER BY diff) AS p_90
 FROM diff_tab
 
 -- count organic and traffic visits

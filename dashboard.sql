@@ -43,34 +43,37 @@ SELECT PERCENTILE_DISC(0.9) WITHIN GROUP (ORDER BY diff) AS p_90
 FROM diff_tab;
 
 -- count organic and traffic visits
-WITH organic_and_ads AS (
+WITH tab AS (
     SELECT
         visitor_id,
         visit_date,
         CASE
-        	WHEN medium = 'organic' THEN medium
-    	    ELSE 'ads'
+        	    WHEN medium = 'organic' THEN medium
+    	        ELSE 'ads'
         END AS source
     FROM sessions
 ),
+
 ads AS (
     SELECT
         DATE(visit_date) AS visit_date,
         COUNT(visitor_id) AS ads_visitors
-    FROM organic_and_ads
+    FROM tab
     WHERE SOURCE = 'ads'
     GROUP BY DATE(visit_date)
     ORDER BY visit_date ASC
 ),
+
 organic AS (
     SELECT
         DATE(visit_date) AS visit_date,
         COUNT(visitor_id) AS organic_visitors
-    FROM organic_and_ads
-    WHERE SOURCE = 'organic'
+    FROM tab
+    WHERE source = 'organic'
     GROUP BY DATE(visit_date)
     ORDER BY visit_date ASC
 )
+
 SELECT
     ads.visit_date,
     ads.ads_visitors,

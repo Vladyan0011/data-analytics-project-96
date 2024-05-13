@@ -48,9 +48,8 @@ WITH tab AS (
         visitor_id,
         visit_date,
         CASE
-        	WHEN medium = 'organic'
-                THEN medium
-    	        ELSE 'ads'
+        	WHEN medium = 'organic' THEN medium
+    	    ELSE 'ads'
         END AS source
     FROM sessions
 ),
